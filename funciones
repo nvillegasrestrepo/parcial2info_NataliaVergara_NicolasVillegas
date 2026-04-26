@@ -79,3 +79,62 @@ class ProcesadorSIATA:
         if col not in self.df.columns:
             print("Columna inválida")
             return
+                
+class ProcesadorEEG:
+    def __init__(self, ruta):
+        self.ruta = ruta
+        self.data = sio.loadmat(ruta)
+        self.fs = 1000
+
+    def mostrar_llaves(self):
+        print(sio.whosmat(self.ruta))
+
+    def obtener(self):
+        for k in self.data:
+            if not k.startswith('__'):
+                print("Usando variable:", k)
+                return self.data[k]
+
+    def operar(self):
+        m = self.obtener()
+        print("Forma de la matriz:", m.shape)
+        if m is None:
+            print("No se encontró matriz válida")
+            return
+        print("Número de canales disponibles:", m.shape[0])
+
+        if m.ndim == 3:
+            m = m[:,:,0]
+
+        c1 = validar_int("Canal 1: ")
+        c2 = validar_int("Canal 2: ")
+        c3 = validar_int("Canal 3: ")
+        i = validar_int("Inicio: ")
+        f = validar_int("Fin: ")
+        
+        if c1 >= m.shape[0] or c2 >= m.shape[0] or c3 >= m.shape[0]:
+            print("Canal fuera de rango")
+            return
+        
+        if i >= f:
+            print("Rango inválido")
+            return
+
+        t = np.arange(i,f)/self.fs
+        res = m[c1,i:f] + m[c2,i:f] + m[c3,i:f]
+
+        fig, ax = plt.subplots(2,1)
+
+        ax[0].plot(t, m[c1,i:f], label="c1")
+        ax[0].plot(t, m[c2,i:f], label="c2")
+        ax[0].plot(t, m[c3,i:f], label="c3")
+        ax[0].legend()
+        ax[0].set_xlabel("Tiempo (s)")
+        ax[0].set_ylabel("Microvoltios (µV)")
+
+        ax[1].plot(t, res)
+        ax[1].set_xlabel("Tiempo (s)")
+        ax[1].set_ylabel("Microvoltios (µV)")
+
+        plt.savefig("eeg_suma.png")
+        plt.show()
