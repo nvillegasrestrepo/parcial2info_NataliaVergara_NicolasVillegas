@@ -138,3 +138,37 @@ class ProcesadorEEG:
 
         plt.savefig("eeg_suma.png")
         plt.show()
+
+    def estadisticas(self):
+        m = self.obtener()
+
+        if m is None:
+            print("No se encontró matriz válida")
+            return
+
+        print("Forma de la matriz:", m.shape)
+
+        if m.ndim != 3:
+            print("Error: la matriz no es 3D, no se pueden calcular estadísticas")
+            return
+
+        prom = np.mean(m, axis=2)
+        std = np.std(m, axis=2)
+        
+        t = np.arange(0,100)/self.fs
+
+        fig, ax = plt.subplots(2,1)
+
+        ax[0].stem(t, prom[0,:100])
+        ax[0].set_xlabel("Tiempo (s)")
+        ax[0].set_ylabel("Microvoltios (µV)")
+        ax[0].set_title("Promedio")
+        
+        ax[1].stem(t, std[0,:100])
+        ax[1].set_xlabel("Tiempo (s)")
+        ax[1].set_ylabel("Microvoltios (µV)")
+        ax[1].set_title("Desviación estándar")
+
+        plt.tight_layout()
+        plt.savefig("eeg_stats.png")
+        plt.show()
