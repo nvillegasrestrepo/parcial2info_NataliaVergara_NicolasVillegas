@@ -17,3 +17,26 @@ def menu():
             except:
                 print("Error: archivo inválido o no encontrado")
                 continue
+
+            while True:
+                print("\n MENÚ SIATA")
+                print("1. Mostrar información general del archivo")
+                print("2. Generar gráficos estadísticos (plot, boxplot, histograma)")
+                print("3. Realizar operaciones sobre columnas (apply, map, suma)")
+                print("4. Realizar remuestreo temporal (diario, mensual, trimestral)")
+                print("5. Volver al menú principal")
+
+                sub = input("Seleccione una opción: ")
+
+                if sub == "1":
+                    obj.mostrar_info()
+                elif sub == "2":
+                    obj.graficar()
+                elif sub == "3":
+                    obj.operaciones()
+                elif sub == "4":
+                    obj.remuestreo()
+                elif sub == "5":
+                    break
+                else:
+                    print("Opción no válida.")
