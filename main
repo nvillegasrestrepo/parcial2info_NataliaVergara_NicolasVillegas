@@ -1,0 +1,19 @@
+from funciones import ProcesadorSIATA, ProcesadorEEG
+
+
+def menu():
+    while True:
+        print("SISTEMA DE EXPLORACIÓN NEUROAMBIENTAL")
+        print("1. Procesar archivos SIATA (CSV)")
+        print("2. Procesar archivos EEG (MAT)")
+        print("3. Salir del programa")
+
+        op = input("Seleccione una opción: ")
+
+        if op == "1":
+            ruta = input("\nIngrese la ruta del archivo CSV: ")
+            try:
+                obj = ProcesadorSIATA(ruta)
+            except:
+                print("Error: archivo inválido o no encontrado")
+                continue
