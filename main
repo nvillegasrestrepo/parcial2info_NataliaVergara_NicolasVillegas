@@ -40,3 +40,38 @@ def menu():
                     break
                 else:
                     print("Opción no válida.")
+
+        elif op == "2":
+            ruta = input("\nIngrese la ruta del archivo MAT: ")
+            try:
+                obj = ProcesadorEEG(ruta)
+            except:
+                print("Error: archivo inválido o no encontrado")
+                continue
+            obj.mostrar_llaves()
+
+            while True:
+                print("\n MENÚ EEG ")
+                print("1. Sumar tres canales en un intervalo de tiempo")
+                print("2. Calcular promedio y desviación estándar de la señal")
+                print("3. Volver al menú principal")
+
+                sub = input("Seleccione una opción: ")
+
+                if sub == "1":
+                    obj.operar()
+                elif sub == "2":
+                    obj.estadisticas()
+                elif sub == "3":
+                    break
+                else:
+                    print("Opción no válida.")
+
+        elif op == "3":
+            print("Cerrando...")
+            break
+        else:
+            print("Opción no válida.")
+            
+if __name__ == "__main__":
+    menu()
